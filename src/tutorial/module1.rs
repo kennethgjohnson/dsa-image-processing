@@ -1,3 +1,4 @@
+// Array Module1 - Memory Access Patterns
 use std::time::Instant; // For capturing timing information.
 
 // Helper functions will go here as we build them
