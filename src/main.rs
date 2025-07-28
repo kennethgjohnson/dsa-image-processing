@@ -7,6 +7,8 @@ fn main() {
     match env::args().nth(1).as_deref() {
         Some("1") => arrays_module1_memory_access_patterns(),
         Some("2") => arrays_module2_performance_tradeoffs_benchmark(),
-        _ => println!("No tutorial module specified."),
+        _ => println!(
+            "No tutorial module specified or it is invalid. Specify which tutorial module you wish to run by specifying a number following the command i.e. cargo run --release -- 2"
+        ),
     }
 }
