@@ -245,14 +245,14 @@ fn create_my_vec_push_doubleing(element_count: usize) -> MyVector<i32> {
 }
 
 fn print_three_results(n: usize, f: Duration, g: Duration, d: Duration) {
-    let f_us = f.as_micros() as f64;
-    let g_us = g.as_micros() as f64;
-    let d_us = d.as_micros() as f64;
+    let f_uq = f.as_micros() as f64;
+    let g_uq = g.as_micros() as f64;
+    let d_uq = d.as_micros() as f64;
 
     // figure out the minimum
-    let fastest = if f_us <= g_us && f_us <= d_us {
+    let fastest = if f_uq <= g_uq && f_uq <= d_uq {
         "F"
-    } else if g_us <= f_us && g_us <= d_us {
+    } else if g_uq <= f_uq && g_uq <= d_uq {
         "G"
     } else {
         "D"
@@ -260,6 +260,6 @@ fn print_three_results(n: usize, f: Duration, g: Duration, d: Duration) {
 
     println!(
         "{:<9} | {:>12.1} | {:>12.1} | {:>12.1}  |   {}",
-        n, f_us, g_us, d_us, fastest
+        n, f_uq, g_uq, d_uq, fastest
     );
 }

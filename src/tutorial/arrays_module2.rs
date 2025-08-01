@@ -112,9 +112,9 @@ fn print_output_result(
     lst_time: Duration,
     is_knee_found: &mut bool,
 ) {
-    let array_ns = arr_time.as_micros() as f64;
-    let linkedlist_ns = lst_time.as_micros() as f64;
-    let ratio = array_ns / linkedlist_ns;
+    let array_uq = arr_time.as_micros() as f64;
+    let linkedlist_uq = lst_time.as_micros() as f64;
+    let ratio = array_uq / linkedlist_uq;
     let mut knee = "";
     if ratio > 1.0 && !*is_knee_found {
         knee = " <-- knee";
@@ -122,6 +122,6 @@ fn print_output_result(
     }
     println!(
         "{:<9} | {:>15.3} | {:>20.3} | {:>6.1}x{}",
-        element_count, array_ns, linkedlist_ns, ratio, knee
+        element_count, array_uq, linkedlist_uq, ratio, knee
     );
 }
