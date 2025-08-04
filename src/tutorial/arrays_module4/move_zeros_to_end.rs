@@ -1,4 +1,6 @@
-use super::common_util::{print_header_one_metric_result, print_output_one_metric_result};
+use crate::tutorial::common_util::{
+    print_header_one_metric_result, print_output_one_metric_result,
+};
 use std::time::Instant;
 
 pub fn arrays_module4_core_array_algorithms_move_zeros_to_end() {

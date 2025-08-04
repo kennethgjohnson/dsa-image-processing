@@ -3,7 +3,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use super::common_util::create_array;
+use crate::tutorial::common_util::create_array;
 
 pub fn arrays_module4_core_array_algorithms_two_pointer_technique() {
     println!("==> Two-Pointer Technique - Array reversal O(n)");

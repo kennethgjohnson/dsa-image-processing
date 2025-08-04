@@ -5,6 +5,7 @@ use tutorial::{
     arrays_module2::arrays_module2_performance_tradeoffs_benchmark,
     arrays_module3::arrays_module3_dynamic_arrays_and_amortized_analysis,
     arrays_module4::arrays_module4_core_array_algorithms,
+    arrays_module5::arrays_module5_sliding_windows_and_prefix_sum_tricks,
 };
 
 fn main() {
@@ -13,6 +14,7 @@ fn main() {
         Some("2") => arrays_module2_performance_tradeoffs_benchmark(),
         Some("3") => arrays_module3_dynamic_arrays_and_amortized_analysis(),
         Some("4") => arrays_module4_core_array_algorithms(),
+        Some("5") => arrays_module5_sliding_windows_and_prefix_sum_tricks(),
         _ => println!(
             "No tutorial module specified or it is invalid. Specify which tutorial module you wish to run by specifying a number following the command i.e. cargo run --release -- 2"
         ),

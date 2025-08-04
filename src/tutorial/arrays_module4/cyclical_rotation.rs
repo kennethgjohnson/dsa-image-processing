@@ -1,4 +1,4 @@
-use super::common_util::create_array;
+use crate::tutorial::common_util::create_array;
 use std::time::{Duration, Instant};
 pub fn arrays_module4_core_array_algorithms_cyclical_rotation() {
     // We will implement the rotate_right_naive ,rotate_right, and rotate_left
