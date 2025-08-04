@@ -48,12 +48,12 @@ pub fn print_output_row_ratio_compare_result(
         let first_uq = durations.0.as_micros();
         let second_uq = durations.1.as_micros();
         let ratio = durations.0.as_nanos() as f64 / durations.1.as_nanos().max(1) as f64;
-
-        let first_column_width = col_names[i + 1].chars().count();
-        let second_column_width = col_names[i + 2].chars().count();
-        let ratio_column_width = col_names[i + 3].chars().count();
+        let column_base_idx = i * 3;
+        let first_column_width = col_names[column_base_idx + 1].chars().count();
+        let second_column_width = col_names[column_base_idx + 2].chars().count();
+        let ratio_column_width = col_names[column_base_idx + 3].chars().count();
         print!(
-            "| {0:>1$} | {2:3$} | {4:5$.1}x",
+            "| {0:>1$} | {2:3$} | {4:5$.1}x ",
             first_uq,
             first_column_width,
             second_uq,
