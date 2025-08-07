@@ -2,9 +2,12 @@
 
 use super::prefix_sum_arrays::{make_prefix_sum_array, range_sum_naive, range_sum_prefix_sum_arr};
 use crate::tutorial::common_util::{
-    create_array, print_header, print_output_row_ratio_compare_result,
+    create_array, median_duration_index_u128, print_header, print_output_row_ratio_compare_result,
 };
-use std::{collections::HashMap, time::Instant};
+use std::{
+    collections::HashMap,
+    time::{Duration, Instant},
+};
 
 pub fn arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_k() {
     println!("==> Mini challenge: count the number of sub arrays in an array that total to k");
@@ -19,20 +22,53 @@ pub fn arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_
     ];
     print_header(&columns);
     let size_interval = 1;
-    let size_count = 14;
+    let size_count = 13;
+    let lower_threshold = 16;
     // starting at
-    let arr_sizes: Vec<usize> = (0..size_count).map(|i| size_interval << i).collect();
+    let arr_sizes: Vec<usize> = (0..size_count)
+        .map(|i| size_interval << i)
+        .filter(|element| *element >= lower_threshold)
+        .collect();
     for size in arr_sizes {
+        let mut arr_time_naive: Vec<Duration> = Vec::with_capacity(10);
+        let mut arr_time_prefix_sum_array: Vec<Duration> = Vec::with_capacity(1000);
+        let mut arr_time_prefix_sum_array_with_hashmap: Vec<Duration> = Vec::with_capacity(1000);
+
         let arr = create_array(size);
-        let start = Instant::now();
-        count_subarrays_sum_k_with_naive_approach(&arr, 123_456_789);
-        let time_naive = start.elapsed();
-        let start = Instant::now();
-        count_subarrays_sum_k_with_prefix_sum_array(&arr, 123_456_789);
-        let time_prefix_sum_array = start.elapsed();
-        let start = Instant::now();
-        count_sub_arrays_sum_k_with_prefix_and_hashmap(&arr, 123_456_789);
-        let time_prefix_sum_array_with_hashmap = start.elapsed();
+
+        for _ in 0..10 {
+            let start = Instant::now();
+            count_subarrays_sum_k_with_naive_approach(&arr, 123_456_789);
+            arr_time_naive.push(start.elapsed());
+        }
+
+        for _ in 0..1000 {
+            let start = Instant::now();
+            count_subarrays_sum_k_with_prefix_sum_array(&arr, 123_456_789);
+            arr_time_prefix_sum_array.push(start.elapsed());
+        }
+
+        for _ in 0..1000 {
+            let start = Instant::now();
+            count_sub_arrays_sum_k_with_prefix_and_hashmap(&arr, 123_456_789);
+            arr_time_prefix_sum_array_with_hashmap.push(start.elapsed());
+        }
+
+        let time_naive = arr_time_naive[median_duration_index_u128(&arr_time_naive)];
+        let time_prefix_sum_array = Duration::from_nanos(
+            (arr_time_prefix_sum_array
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_prefix_sum_array.len() as u128) as u64,
+        );
+        let time_prefix_sum_array_with_hashmap = Duration::from_nanos(
+            (arr_time_prefix_sum_array_with_hashmap
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_prefix_sum_array_with_hashmap.len() as u128) as u64,
+        );
         print_output_row_ratio_compare_result(
             &columns,
             size,

@@ -47,7 +47,7 @@ pub fn print_output_row_ratio_compare_result(
         let durations = duration_data[i];
         let first_uq = durations.0.as_micros();
         let second_uq = durations.1.as_micros();
-        let ratio = durations.0.as_nanos() as f64 / durations.1.as_nanos().max(1) as f64;
+        let ratio = { durations.0.as_nanos().max(1) as f64 / durations.1.as_nanos().max(1) as f64 };
         let column_base_idx = i * 3;
         let first_column_width = col_names[column_base_idx + 1].chars().count();
         let second_column_width = col_names[column_base_idx + 2].chars().count();
@@ -63,4 +63,36 @@ pub fn print_output_row_ratio_compare_result(
         );
     }
     print!("\n")
+}
+
+pub fn median_duration_index_u128(arr_durations: &[Duration]) -> usize {
+    if arr_durations.is_empty() {
+        panic!("No results provided in array")
+    }
+
+    // Pair each value with its original index
+    let mut indexed: Vec<(usize, u128)> = arr_durations
+        .iter()
+        .copied()
+        .enumerate()
+        .map(|(i, dur)| (i, dur.as_nanos()))
+        .collect();
+
+    // Sort by value, keeping original indices
+    indexed.sort_unstable_by_key(|&(_, val)| val);
+
+    let mid = arr_durations.len() / 2;
+
+    if arr_durations.len() % 2 == 1 {
+        indexed[mid].0 // Odd: middle element
+    } else {
+        // Even: pick the earlier of the two middle indices (or customize as needed)
+        let i1 = indexed[mid - 1].0;
+        let i2 = indexed[mid].0;
+        if arr_durations[i1] <= arr_durations[i2] {
+            i1
+        } else {
+            i2
+        }
+    }
 }

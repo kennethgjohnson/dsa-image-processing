@@ -1,7 +1,7 @@
 use crate::tutorial::common_util::{
-    create_array, print_header, print_output_row_ratio_compare_result,
+    create_array, median_duration_index_u128, print_header, print_output_row_ratio_compare_result,
 };
-use std::time::Instant;
+use std::time::{Duration, Instant};
 pub fn arrays_module5_fundamental_patterns_in_optimization_prefix_sum_arrays() {
     println!("==> Prefix-Sum Arrays");
     let columns = [
@@ -21,15 +21,30 @@ pub fn arrays_module5_fundamental_patterns_in_optimization_prefix_sum_arrays() {
         .filter(|element| *element >= lower_threshold)
         .collect();
     for size in arr_sizes {
+        let mut arr_time_naive: Vec<Duration> = Vec::with_capacity(10);
+        let mut arr_time_prefix: Vec<Duration> = Vec::with_capacity(1000);
         let arr = create_array(size);
         let prefix_sum_arr = make_prefix_sum_array(&arr); // Note this precomputes O(n) but O(1) amortised
-        let start = Instant::now();
-        range_sum_naive(&arr, 1, size - 1);
-        let time_naive = start.elapsed();
-        let start = Instant::now();
-        range_sum_prefix_sum_arr(&prefix_sum_arr, 1, size - 1);
-        let time = start.elapsed();
-        print_output_row_ratio_compare_result(&columns, size, vec![(time_naive, time)]);
+        for _ in 0..10 {
+            let start = Instant::now();
+            range_sum_naive(&arr, 1, size - 1);
+            arr_time_naive.push(start.elapsed());
+        }
+        // It's very fast, sometimes reporting 0ns sometimes 100ns so its probably
+        // running up against a minimum time measurement, going to average this one
+        // instead of taking the median.
+        for _ in 0..1000 {
+            let start = Instant::now();
+            range_sum_prefix_sum_arr(&prefix_sum_arr, 1, size - 1);
+            arr_time_prefix.push(start.elapsed());
+        }
+        let time_naive = arr_time_naive[median_duration_index_u128(&arr_time_naive)];
+
+        let time_prefix = Duration::from_nanos(
+            (arr_time_prefix.iter().map(|d| d.as_nanos()).sum::<u128>()
+                / arr_time_prefix.len() as u128) as u64,
+        );
+        print_output_row_ratio_compare_result(&columns, size, vec![(time_naive, time_prefix)]);
     }
     print!("\n\n");
 }
