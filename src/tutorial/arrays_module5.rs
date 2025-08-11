@@ -6,9 +6,6 @@ mod min_slice_len_which_sums_ge_target;
 mod prefix_sum_arrays;
 mod suffix_sum_arrays;
 
-use core::num;
-use std::env::join_paths;
-
 use challenge_count_sub_arrays_sum_k::challenge_count_sub_arrays_sum_k;
 use challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements::challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements;
 use leetcode_209_min_size_subarray_with_sum_ge_target::bonus_leetcode_209_min_size_subarray_with_sum_ge_target;
@@ -66,95 +63,4 @@ pub fn arrays_module5_sliding_windows_and_prefix_sum_tricks() {
 
     // Bonus 3: Leetcode 76: Minimum Window Substring
     //https://leetcode.com/problems/minimum-window-substring/description/
-}
-
-enum SearchMode {
-    ExpandRight,
-    ContractLeft,
-    SlideRight,
-}
-
-pub fn min_sub_array_len(target: i32, nums: Vec<i32>) -> i32 {
-    // nums is positive integers
-    // target is posive integer
-    // find length of shortest slice, that's sum is >= target
-    // if it doesnt exist return 0
-    if nums.len() == 0 {
-        return 0;
-    }
-
-    let mut arr_prefix = Vec::with_capacity(nums.len());
-
-    let mut l = 0;
-    let mut r: usize = 0;
-    let mut prefix_total = 0;
-
-    let mut search_mode = SearchMode::ExpandRight;
-    let mut result = 0;
-    loop {
-        match search_mode {
-            SearchMode::ExpandRight => {
-                // Find the first slice that puts us at or over the target
-                r += 1;
-                prefix_total += nums[r - 1];
-                arr_prefix.push(prefix_total);
-
-                if range_sum_prefix_sum_arr(&arr_prefix, l, r - 1) >= target {
-                    // We are at a healthy slice size and can start contracting the left
-                    search_mode = SearchMode::ContractLeft;
-                    result = r - l;
-                } else {
-                    if r == nums.len() {
-                        // We tried to find a qualifying window but none were
-                        // found: our work is done.
-                        break;
-                    }
-                }
-            }
-            SearchMode::ContractLeft => {
-                l += 1;
-                if range_sum_prefix_sum_arr(&arr_prefix, l, r - 1) < target {
-                    // We found the current minimum slice size so we can now
-                    // slide the whole window as a fixed window right until we
-                    // find this smaller window which qualifies to our right.
-                    if r == nums.len() {
-                        // We were at the last token and have just completed
-                        // contracting the left: our work is done.
-                        break;
-                    }
-                    search_mode = SearchMode::SlideRight;
-                } else {
-                    // We contracted from the left and found a smaller window
-                    result = r - l;
-                }
-            }
-            SearchMode::SlideRight => {
-                l += 1;
-                r += 1;
-                // expand prefix array
-                prefix_total += nums[r - 1];
-                arr_prefix.push(prefix_total);
-                if range_sum_prefix_sum_arr(&arr_prefix, l, r - 1) >= target {
-                    // We are at a healthy slice size and can start contracting the left
-                    search_mode = SearchMode::ContractLeft;
-                    result = r - l;
-                } else {
-                    if r == nums.len() {
-                        // We are at the last token and could not find a qualifying smaller
-                        // window: our work is done
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    return result as i32;
-}
-
-fn range_sum_prefix_sum_arr(prefix_arr: &[i32], l: usize, r: usize) -> i32 {
-    if l == 0 {
-        prefix_arr[r]
-    } else {
-        prefix_arr[r] - prefix_arr[l - 1]
-    }
 }
