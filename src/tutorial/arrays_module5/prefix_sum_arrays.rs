@@ -2,7 +2,7 @@ use crate::tutorial::common_util::{
     create_array, median_duration_index_u128, print_header, print_output_row_ratio_compare_result,
 };
 use std::time::{Duration, Instant};
-pub fn arrays_module5_fundamental_patterns_in_optimization_prefix_sum_arrays() {
+pub fn prefix_sum_arrays() {
     println!("==> Prefix-Sum Arrays");
     let columns = [
         "Data Size",

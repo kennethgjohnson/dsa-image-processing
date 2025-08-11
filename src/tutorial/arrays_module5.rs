@@ -1,14 +1,19 @@
-mod count_subarrays_sum_k;
-mod max_sum_fixed_sliding_window_over_array;
+mod challenge_count_sub_arrays_sum_k;
+mod challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements;
+mod max_sum_for_k_slice;
+mod min_slice_len_which_sums_ge_target;
 mod prefix_sum_arrays;
 mod suffix_sum_arrays;
 
-use count_subarrays_sum_k::arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_k;
-use max_sum_fixed_sliding_window_over_array::arrays_module5_fundamental_patterns_in_optimization_max_sum_fixed_window;
-use prefix_sum_arrays::arrays_module5_fundamental_patterns_in_optimization_prefix_sum_arrays;
-use suffix_sum_arrays::arrays_module5_fundamental_patterns_in_optimization_suffix_sum_arrays;
+use challenge_count_sub_arrays_sum_k::challenge_count_sub_arrays_sum_k;
+use challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements::challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements;
+use max_sum_for_k_slice::max_sum_for_k_slice;
+use min_slice_len_which_sums_ge_target::min_slice_len_which_sums_ge_target;
+use prefix_sum_arrays::prefix_sum_arrays;
+use suffix_sum_arrays::suffix_sum_arrays;
 
 pub fn arrays_module5_sliding_windows_and_prefix_sum_tricks() {
+    // Topic: fundamental patterns in optimization
     // We will be going over 2 fundamental paterns that appear in optimization
     // tasks:
     // 1) Prefix Sum Arrays - used for instant sub array sum calculations
@@ -17,14 +22,31 @@ pub fn arrays_module5_sliding_windows_and_prefix_sum_tricks() {
     //      and Smallest Subarray ≥ Target (variable-sized sliding windows)
 
     // 1) Prefix Sum Arrays
-    arrays_module5_fundamental_patterns_in_optimization_prefix_sum_arrays();
-    arrays_module5_fundamental_patterns_in_optimization_suffix_sum_arrays();
+    // Naive O(n)
+    // Turning O(n) into O(1)
+    prefix_sum_arrays();
+    suffix_sum_arrays();
 
     // Extra Challenge - count_sub_arrays_sum_k - is particularly hard and interesting at least for me...
-    arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_k();
+    // I.e. how to use algebra with a hashmap and prefix arrays to encode a
+    //  relation between previous elements
+    //  Naive O(n^3)
+    //  Prefix Sum O(n^2)
+    //  Prefix Sum with Hashmap encoding algebraic relation O(n)
+    challenge_count_sub_arrays_sum_k();
 
-    // 2) Siding Window Max Sum of Fixed Window
-    arrays_module5_fundamental_patterns_in_optimization_max_sum_fixed_window();
+    // 2) Sliding Windows
+    // Fixed - Window
+    // Naive O(n^2)
+    // Prefix Sum O(n)
+    max_sum_for_k_slice();
 
-    // 2) TODO Siding Window: Smallest Subarray ≥ Target (variable-sized sliding window)
+    // Variable - Window
+    // Naive O(n^3)
+    // Prefix Sum O(n^2)
+    // Prefix Sum with variable window O(n)
+    min_slice_len_which_sums_ge_target();
+
+    // Mini-Challenge: Longest Substring with At Most K Distinct Elements
+    challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements();
 }

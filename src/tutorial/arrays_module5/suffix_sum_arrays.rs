@@ -1,6 +1,6 @@
 use crate::tutorial::common_util::create_array;
 
-pub fn arrays_module5_fundamental_patterns_in_optimization_suffix_sum_arrays() {
+pub fn suffix_sum_arrays() {
     println!("==> Suffix-Sum Arrays (Accidental implementation)");
     let arr_source_values = create_array(3);
     let prefix_sum_array = make_sufix_sum_array(&arr_source_values);

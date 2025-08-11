@@ -6,7 +6,9 @@ use crate::tutorial::{
     },
 };
 use std::time::{Duration, Instant};
-pub fn arrays_module5_fundamental_patterns_in_optimization_max_sum_fixed_window() {
+
+// Fixed Sliding Window
+pub fn max_sum_for_k_slice() {
     println!("==> Sliding Window (Fixed) - max sum in fixed sliding window over array");
     let columns = [
         "Data Size",
@@ -16,7 +18,7 @@ pub fn arrays_module5_fundamental_patterns_in_optimization_max_sum_fixed_window(
     ];
     print_header(&columns);
     let size_interval = 1;
-    let size_count = 18;
+    let size_count = 17;
     let lower_threshold = 16;
     // starting at
     let arr_sizes: Vec<usize> = (0..size_count)
@@ -57,7 +59,7 @@ pub fn arrays_module5_fundamental_patterns_in_optimization_max_sum_fixed_window(
     print!("\n\n");
 }
 
-// prefix sum approach
+// prefix sum approach O(n)
 fn max_sum_fixed_window_using_prefix_sum(arr_prefix_sum: &[i32], k: usize) -> i32 {
     if k == 0 {
         panic!("window size must be > 0")

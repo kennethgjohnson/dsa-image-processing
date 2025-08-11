@@ -9,7 +9,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-pub fn arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_k() {
+pub fn challenge_count_sub_arrays_sum_k() {
     println!("==> Mini challenge: count the number of sub arrays in an array that total to k");
     let columns = [
         "Data Size",
@@ -22,7 +22,7 @@ pub fn arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_
     ];
     print_header(&columns);
     let size_interval = 1;
-    let size_count = 13;
+    let size_count = 12;
     let lower_threshold = 16;
     // starting at
     let arr_sizes: Vec<usize> = (0..size_count)
@@ -30,27 +30,27 @@ pub fn arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_
         .filter(|element| *element >= lower_threshold)
         .collect();
     for size in arr_sizes {
-        let mut arr_time_naive: Vec<Duration> = Vec::with_capacity(10);
+        let mut arr_time_naive: Vec<Duration> = Vec::with_capacity(5);
         let mut arr_time_prefix_sum_array: Vec<Duration> = Vec::with_capacity(1000);
         let mut arr_time_prefix_sum_array_with_hashmap: Vec<Duration> = Vec::with_capacity(1000);
 
         let arr = create_array(size);
 
-        for _ in 0..10 {
+        for _ in 0..5 {
             let start = Instant::now();
-            count_subarrays_sum_k_with_naive_approach(&arr, 123_456_789);
+            count_sub_arrays_sum_k_using_naive_approach(&arr, 123_456_789);
             arr_time_naive.push(start.elapsed());
         }
 
         for _ in 0..1000 {
             let start = Instant::now();
-            count_subarrays_sum_k_with_prefix_sum_array(&arr, 123_456_789);
+            count_sub_arrays_sum_k_using_prefix_sum_array(&arr, 123_456_789);
             arr_time_prefix_sum_array.push(start.elapsed());
         }
 
         for _ in 0..1000 {
             let start = Instant::now();
-            count_sub_arrays_sum_k_with_prefix_and_hashmap(&arr, 123_456_789);
+            count_sub_arrays_sum_k_using_prefix_and_hashmap(&arr, 123_456_789);
             arr_time_prefix_sum_array_with_hashmap.push(start.elapsed());
         }
 
@@ -86,7 +86,7 @@ pub fn arrays_module5_fundamental_patterns_in_optimization_count_sub_arrays_sum_
 // that total to k
 // This is the naive implementation so its going to be a brute force
 // every time you check. O(n^3) implementation.
-fn count_subarrays_sum_k_with_naive_approach(arr: &[i32], k: i32) -> i32 {
+fn count_sub_arrays_sum_k_using_naive_approach(arr: &[i32], k: i32) -> i32 {
     let mut count = 0;
     for l in 0..arr.len() {
         for r in l..arr.len() {
@@ -102,7 +102,7 @@ fn count_subarrays_sum_k_with_naive_approach(arr: &[i32], k: i32) -> i32 {
 // Here we do the same as the naive implementation except we create a
 // prefix_sum_arry and reuse it so we have O(1) checks on the sum_value
 // Theoretically it brings O(n^3) down to O(n^2)
-fn count_subarrays_sum_k_with_prefix_sum_array(arr: &[i32], k: i32) -> i32 {
+fn count_sub_arrays_sum_k_using_prefix_sum_array(arr: &[i32], k: i32) -> i32 {
     let prefix_sum_array = make_prefix_sum_array(&arr);
     let mut count = 0;
     for l in 0..arr.len() {
@@ -142,7 +142,7 @@ fn count_subarrays_sum_k_with_prefix_sum_array(arr: &[i32], k: i32) -> i32 {
 // the hash map can be inspected for (prefix_sum[j] - k) from step 4) for the existance
 // of such a preceding set, and it can be added to the total of matches that add up to k
 // that has been seen.
-fn count_sub_arrays_sum_k_with_prefix_and_hashmap(arr: &[i32], k: i32) -> i32 {
+fn count_sub_arrays_sum_k_using_prefix_and_hashmap(arr: &[i32], k: i32) -> i32 {
     if arr.len() == 0 {
         return 0;
     }
@@ -183,7 +183,7 @@ fn test_count_subarrays_sum_k_with_naive_approach() {
     ];
 
     for (arr, k, expected) in cases {
-        let result = count_subarrays_sum_k_with_naive_approach(&arr, k);
+        let result = count_sub_arrays_sum_k_using_naive_approach(&arr, k);
         assert_eq!(result, expected, "Failed on arr: {:?}, k: {}", arr, k);
     }
 }
@@ -201,7 +201,7 @@ fn test_count_subarrays_sum_k_with_prefix_sum_array() {
     ];
 
     for (arr, k, expected) in cases {
-        let result = count_subarrays_sum_k_with_prefix_sum_array(&arr, k);
+        let result = count_sub_arrays_sum_k_using_prefix_sum_array(&arr, k);
         assert_eq!(result, expected, "Failed on arr: {:?}, k: {}", arr, k);
     }
 }
@@ -219,7 +219,7 @@ fn test_count_subarrays_sum_k_with_prefix_and_hashmap() {
     ];
 
     for (arr, k, expected) in cases {
-        let result = count_sub_arrays_sum_k_with_prefix_and_hashmap(&arr, k);
+        let result = count_sub_arrays_sum_k_using_prefix_and_hashmap(&arr, k);
         assert_eq!(result, expected, "Failed on arr: {:?}, k: {}", arr, k);
     }
 }
