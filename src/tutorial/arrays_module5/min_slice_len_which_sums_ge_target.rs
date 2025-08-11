@@ -280,7 +280,7 @@ enum SearchMode {
 // prefix sum inside it while sliding, aparently it's more cache friendly to the
 // processor, however in this case we just wanted to go from O(n^3) to O(n)
 // which we did achieve.
-fn min_slice_len_which_sums_ge_target_using_variable_sliding_window_and_prefix_array_for_sum(
+pub fn min_slice_len_which_sums_ge_target_using_variable_sliding_window_and_prefix_array_for_sum(
     arr_prefix_array: &[i32],
     target: i32,
 ) -> Option<usize> {
