@@ -1,6 +1,7 @@
 mod challenge_count_sub_arrays_sum_k;
 mod challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements;
 mod leetcode_209_min_size_subarray_with_sum_ge_target;
+mod leetcode_560_count_subarray_sum_equals_k;
 mod max_sum_for_k_slice;
 mod min_slice_len_which_sums_ge_target;
 mod prefix_sum_arrays;
@@ -9,6 +10,7 @@ mod suffix_sum_arrays;
 use challenge_count_sub_arrays_sum_k::challenge_count_sub_arrays_sum_k;
 use challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements::challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements;
 use leetcode_209_min_size_subarray_with_sum_ge_target::bonus_leetcode_209_min_size_subarray_with_sum_ge_target;
+use leetcode_560_count_subarray_sum_equals_k::bonus_leetcode_560_subarray_sum_equals_k;
 use max_sum_for_k_slice::max_sum_for_k_slice;
 use min_slice_len_which_sums_ge_target::min_slice_len_which_sums_ge_target;
 use prefix_sum_arrays::prefix_sum_arrays;
@@ -56,10 +58,11 @@ pub fn arrays_module5_sliding_windows_and_prefix_sum_tricks() {
     // https://leetcode.com/problems/minimum-size-subarray-sum/description/
     // Same as min_slice_len_which_sums_ge_target.rs, I will use this opertunity
     // to build the prefix array during processing.
-    bonus_leetcode_209_min_size_subarray_with_sum_ge_target()
+    bonus_leetcode_209_min_size_subarray_with_sum_ge_target();
 
     // Bonus 2: Leetcode 560: Subarray Sum Equals K
     // https://leetcode.com/problems/subarray-sum-equals-k/description/
+    bonus_leetcode_560_subarray_sum_equals_k();
 
     // Bonus 3: Leetcode 76: Minimum Window Substring
     //https://leetcode.com/problems/minimum-window-substring/description/

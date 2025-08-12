@@ -118,14 +118,14 @@ fn count_sub_arrays_sum_k_using_prefix_sum_array(arr: &[i32], k: i32) -> i32 {
 
 // THIS IS THE IMPLEMENTATION OF count_subarrays_sum_k TO KNOW:
 // Here we do a hashmap implementation directly with the logic we used to build
-// a prefixthe same as the naive implementation except we create a prefix array
+// a prefix the same as the naive implementation except we create a prefix array
 // bringing the overall time down to O(n)
 //
 // This part was stupid hard to understand at least for me:
 // arr_value is technically arr[j] in this discussion
 // 1) prefix_sum[j] is the sum of arr[0]..arr[j]
 // 2) prefix_sum[i] is some sub array of arr[0]..arr[j] that precedes the position j
-// 3) prefix_sum[j] - prefix_sum[i-1] = the sum of arr[i..=j]
+// 3) prefix_sum[j] - prefix_sum[i-1] = the sum of arr[i..=j]  (this is normal prefix sum array behaviour still)
 // Note: we saw in range_sum_prefix_sum_arr how this subtraction of the part
 // preceeding the start of prefix_sum[i] from prefix_sum[j] would convert
 // prefix_sum[j] into sum of arr[i..=j] aka
@@ -133,8 +133,8 @@ fn count_sub_arrays_sum_k_using_prefix_sum_array(arr: &[i32], k: i32) -> i32 {
 // 4) We are trying to count the cases where sum(arr[i..j])==k
 // This means we are effectively trying to count the number of cases as we go where
 // prefix_sum[j] - prefix_sum[i-1] == k
-// **So to put it another way, is if you have prefix_sum[j], then if such a set
-// existed before it would have been seen at prefix_sum[i-1] == prefix_sum[j] - k**
+// **So to put it another way, is if you have prefix_sum[j], then if such a set         <--- THIS IS THE KEY INSIGHT
+// existed before it would have been seen at prefix_sum[i-1] == prefix_sum[j] - k **    <--- THIS IS THE KEY INSIGHT
 // 5) This is the key insight, that we can know if such a set existed at a previous time
 // if we added prefix_sum[j] continually to a hash map while it is running, then the
 // entries in the hashmap effectively become prefix_sum[i] or prefix_sum[i-1]
