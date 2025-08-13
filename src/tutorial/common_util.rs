@@ -96,3 +96,36 @@ pub fn median_duration_index_u128(arr_durations: &[Duration]) -> usize {
         }
     }
 }
+
+// Some deterministic pseudo random string generator: alpha_string_from_seed using XorShift64
+// util.rs
+struct XorShift64 {
+    state: u64,
+}
+
+impl XorShift64 {
+    fn new(seed: u64) -> Self {
+        assert!(seed != 0, "seed must be non-zero");
+        Self { state: seed }
+    }
+
+    fn next_u64(&mut self) -> u64 {
+        let mut x = self.state;
+        x ^= x >> 12;
+        x ^= x << 25;
+        x ^= x >> 27;
+        self.state = x;
+        x.wrapping_mul(0x2545F4914F6CDD1D)
+    }
+}
+
+pub fn alpha_string_from_seed(seed: u64, n: usize) -> String {
+    const ALPHABET: &[u8; 52] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    let mut rng = XorShift64::new(seed);
+    let mut out = String::with_capacity(n);
+    for _ in 0..n {
+        let idx = (rng.next_u64() % ALPHABET.len() as u64) as usize;
+        out.push(ALPHABET[idx] as char);
+    }
+    out
+}

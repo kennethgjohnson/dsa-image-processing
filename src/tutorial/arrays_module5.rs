@@ -2,6 +2,7 @@ mod challenge_count_sub_arrays_sum_k;
 mod challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements;
 mod leetcode_209_min_size_subarray_with_sum_ge_target;
 mod leetcode_560_count_subarray_sum_equals_k;
+mod leetcode_76_min_sub_string_contains_t_chars_including_dupes;
 mod max_sum_for_k_slice;
 mod min_slice_len_which_sums_ge_target;
 mod prefix_sum_arrays;
@@ -9,6 +10,7 @@ mod suffix_sum_arrays;
 
 use challenge_count_sub_arrays_sum_k::challenge_count_sub_arrays_sum_k;
 use challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements::challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements;
+use leetcode_76_min_sub_string_contains_t_chars_including_dupes::bonus_leetcode_76_min_sub_string_contains_t_chars_including_dupes;
 use leetcode_209_min_size_subarray_with_sum_ge_target::bonus_leetcode_209_min_size_subarray_with_sum_ge_target;
 use leetcode_560_count_subarray_sum_equals_k::bonus_leetcode_560_subarray_sum_equals_k;
 use max_sum_for_k_slice::max_sum_for_k_slice;
@@ -16,6 +18,12 @@ use min_slice_len_which_sums_ge_target::min_slice_len_which_sums_ge_target;
 use prefix_sum_arrays::prefix_sum_arrays;
 use suffix_sum_arrays::suffix_sum_arrays;
 
+// Technique's demonstrated:
+// Prefix Arrays
+// Variable/Fixed Sliding Windows
+// Frequency Counting
+// Distinct Counting
+// Constraint Lookups in a Hashmap Cache (encodes the constraint as an algebraic relation to current n to turn O(n) into O(1))
 pub fn arrays_module5_sliding_windows_and_prefix_sum_tricks() {
     // Topic: fundamental patterns in optimization
     // We will be going over 2 fundamental paterns that appear in optimization
@@ -66,4 +74,5 @@ pub fn arrays_module5_sliding_windows_and_prefix_sum_tricks() {
 
     // Bonus 3: Leetcode 76: Minimum Window Substring
     //https://leetcode.com/problems/minimum-window-substring/description/
+    bonus_leetcode_76_min_sub_string_contains_t_chars_including_dupes();
 }
