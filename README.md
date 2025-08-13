@@ -34,6 +34,10 @@ This project runs different tutorial modules based on a command line argument:
 - `1`: Arrays Module 1 - Memory Access Patterns
 - `2`: Arrays Module 2 - Performance Tradeoffs Benchmark
 - `3`: Arrays Module 3 - Dynamic Arrays and Amortized Analysis
+- `4`: Arrays Module 4 - Core Array Algorithms
+- `5`: Arrays Module 5 - Sliding Windows & Prefix-Sum Tricks
+- `6`: Arrays Module 6 - Multi-Dimensional Arrays & Cache
+- `7`: Arrays Module 7 - "Array Toolkit" Capstone Project
 
 To run a specific module, use:
 ```sh
@@ -45,7 +49,7 @@ cargo run --release -- 2
 ```
 If no valid module number is provided, a help message will be displayed.
 
-## Addendum A
+## Addendum A - original roadmap plan
 1. **Module 1 – Memory & Access Patterns**
     
 2. **Module 2 – Performance Trade-offs**
@@ -181,3 +185,22 @@ Build a command‐line “array_utils” program in your language of choice that
 3. **Write automated tests:** ensure correctness (unit tests for every utility).
 4. **Add benchmarks & reports:** harness to log timings and print CSV/table.
 5. **Documentation & README:** explain concepts, usage examples, and performance insights.
+
+## Addendum B - Rough technique / file index.
+### Module 4
+- cyclical_rotation.rs: Implements array rotation.
+- move_zeros_to_end.rs: Solves the "move zeros to end" problem.
+- three_way_partition_dutch_national_flag.rs: Implements the Dutch National Flag problem.
+- two_pointers_technique.rs: Likely demonstrates two-pointer techniques.
+
+### Module 5
+- prefix_sum_arrays.rs: Prefix-sum arrays.
+- suffix_sum_arrays.rs: Suffix-sum arrays.
+- challenge_count_sub_arrays_sum_k.rs: Running Prefix Sum with constraint lookup in Hashmap of running relations.
+- max_sum_for_k_slice.rs: Sliding Window (Fixed) with prefix sum array.
+- min_slice_len_which_sums_ge_target.rs: Sliding Window (Variable) with Prefix Sum for constraint lookup.
+- challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements.rs: Sliding Window (Variable) using Hashmap of Distinct Counting with ranged constraint.
+- leetcode_209_min_size_subarray_with_sum_ge_target.rs: Sliding Window (Variable) with Prefix Sum for constraint lookup.
+- leetcode_560_count_subarray_sum_equals_k.rs: Running Prefix Sum with constraint lookup in Hashmap of running relations.
+- leetcode_76_min_sub_string_contains_t_chars_including_dupes.rs: Slidig Window (Variable) with Frequency Counting, and Constraint Lookup in Hashmap Cache.
+
