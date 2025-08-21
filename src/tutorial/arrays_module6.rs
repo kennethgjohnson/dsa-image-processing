@@ -1,7 +1,7 @@
 mod warm_up_2d_arrays_and_flattening_them;
 use crate::tutorial::{
     arrays_module6::warm_up_2d_arrays_and_flattening_them::{
-        flatten_col_major, flatten_row_major, get_row_major, make_matrix,
+        flatten_row_major, get_row_major, make_matrix,
     },
     common_util::{print_header, print_output_row_ratio_compare_result_nanos},
 };
