@@ -36,7 +36,7 @@ pub fn print_header(col_names: &[&str]) {
     print!("{}", header);
 }
 
-pub fn print_output_row_ratio_compare_result(
+pub fn print_output_row_ratio_compare_result_micros(
     col_names: &[&str],
     size: usize,
     duration_data: Vec<(Duration, Duration)>,
@@ -57,6 +57,35 @@ pub fn print_output_row_ratio_compare_result(
             first_uq,
             first_column_width,
             second_uq,
+            second_column_width,
+            ratio,
+            ratio_column_width - 1 // -1 for the x
+        );
+    }
+    print!("\n")
+}
+
+pub fn print_output_row_ratio_compare_result_nanos(
+    col_names: &[&str],
+    size: usize,
+    duration_data: Vec<(Duration, Duration)>,
+) {
+    // print size first
+    print!(" {:<1$} ", size, col_names[0].chars().count());
+    for i in 0..duration_data.len() {
+        let durations = duration_data[i];
+        let first_ns = durations.0.as_nanos();
+        let second_ns = durations.1.as_nanos();
+        let ratio = { durations.0.as_nanos().max(1) as f64 / durations.1.as_nanos().max(1) as f64 };
+        let column_base_idx = i * 3;
+        let first_column_width = col_names[column_base_idx + 1].chars().count();
+        let second_column_width = col_names[column_base_idx + 2].chars().count();
+        let ratio_column_width = col_names[column_base_idx + 3].chars().count();
+        print!(
+            "| {0:>1$} | {2:3$} | {4:5$.1}x ",
+            first_ns,
+            first_column_width,
+            second_ns,
             second_column_width,
             ratio,
             ratio_column_width - 1 // -1 for the x

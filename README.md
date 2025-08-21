@@ -36,8 +36,9 @@ This project runs different tutorial modules based on a command line argument:
 - `3`: Arrays Module 3 - Dynamic Arrays and Amortized Analysis
 - `4`: Arrays Module 4 - Core Array Algorithms
 - `5`: Arrays Module 5 - Sliding Windows & Prefix-Sum Tricks
-- `6`: Arrays Module 6 - Multi-Dimensional Arrays & Cache
-- `7`: Arrays Module 7 - "Array Toolkit" Capstone Project
+- `6`: Arrays Module 6 - Multi-Dimensional Arrays & Cache (WIP)
+- `7`: Arrays Module 7 - "Array Toolkit" Capstone Project (TODO)
+- `*`: Run all.
 
 To run a specific module, use:
 ```sh

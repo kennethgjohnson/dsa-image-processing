@@ -25,6 +25,7 @@ use suffix_sum_arrays::suffix_sum_arrays;
 // Distinct Counting
 // Constraint Lookups in a Hashmap Cache (encodes the constraint as an algebraic relation to current n to turn O(n) into O(1))
 pub fn arrays_module5_sliding_windows_and_prefix_sum_tricks() {
+    println!("Image Processing DSA - Module 5: Sliding Windows & Prefix-Sum Tricks");
     // Topic: fundamental patterns in optimization
     // We will be going over 2 fundamental paterns that appear in optimization
     // tasks:

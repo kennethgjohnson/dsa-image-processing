@@ -2,7 +2,7 @@ use crate::tutorial::{
     arrays_module5::prefix_sum_arrays::{make_prefix_sum_array, range_sum_prefix_sum_arr},
     common_util::{
         create_array, median_duration_index_u128, print_header,
-        print_output_row_ratio_compare_result,
+        print_output_row_ratio_compare_result_micros,
     },
 };
 use std::time::{Duration, Instant};
@@ -50,7 +50,7 @@ pub fn max_sum_for_k_slice() {
                 .sum::<u128>()
                 / arr_time_using_prefix_sum_array.len() as u128) as u64,
         );
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             size,
             vec![(time_naive, time_using_prefix_sum_array)],

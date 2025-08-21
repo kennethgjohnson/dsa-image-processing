@@ -2,7 +2,7 @@ use crate::tutorial::{
     arrays_module5::prefix_sum_arrays::{make_prefix_sum_array, range_sum_prefix_sum_arr},
     common_util::{
         create_array, median_duration_index_u128, print_header,
-        print_output_row_ratio_compare_result,
+        print_output_row_ratio_compare_result_micros,
     },
 };
 use std::{
@@ -81,7 +81,7 @@ pub fn min_slice_len_which_sums_ge_target() {
                 / arr_time_using_prefix_sum_array_and_variable_sliding_window.len() as u128)
                 as u64,
         );
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             *size,
             vec![
@@ -145,7 +145,7 @@ pub fn min_slice_len_which_sums_ge_target() {
                 as u64,
         );
 
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             *size,
             vec![(

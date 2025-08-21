@@ -134,6 +134,7 @@ impl<T> IndexMut<usize> for MyVector<T> {
 }
 
 pub fn arrays_module3_dynamic_arrays_and_amortized_analysis() {
+    println!("Image Processing DSA - Module 3: Dynamic Arrays & Amortized Analysis");
     let _start = Instant::now(); // warming up the timer.
     println!("==>Testing push_fixed");
     let mut my_vector = MyVector::new();
@@ -201,8 +202,7 @@ pub fn arrays_module3_dynamic_arrays_and_amortized_analysis() {
     for size in [
         1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10_000, 20_000, 30_000, 40_000,
         50_000, 60_000, 70_000, 80_000, 90_000, 100_000, 200_000, 300_000, 400_000, 500_000,
-        600_000, 700_000, 800_000, 900_000, 1_000_000, 2_000_000, 3_000_000, 4_000_000, 5_000_000,
-        6_000_000, 7_000_000, 8_000_000, 9_000_000, 10_000_000,
+        600_000, 700_000, 800_000, 900_000, 1_000_000,
     ] {
         let start = Instant::now();
         create_my_vec_push_fixed(size);

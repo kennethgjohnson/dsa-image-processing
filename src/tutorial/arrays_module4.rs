@@ -4,6 +4,7 @@ mod three_way_partition_dutch_national_flag;
 mod two_pointers_technique;
 
 pub fn arrays_module4_core_array_algorithms() {
+    println!("Image Processing DSA - Module 4: Core Array Algorithms");
     // We will be going over 3 fundamental paterns and perhaps a variant or two,
     // including benchmarking information where appropriate, for some in-place
     // swapping algorithms/techniques.

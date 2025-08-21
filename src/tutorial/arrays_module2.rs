@@ -19,6 +19,7 @@ struct LinkedList {
 }
 
 pub fn arrays_module2_performance_tradeoffs_benchmark() {
+    println!("Image Processing DSA - Module 2: Performance Trade-offs");
     let mut stack_size = 8 * 1024 * 1024;
     if cfg!(debug_assertions) {
         stack_size *= 3;
@@ -62,8 +63,7 @@ fn arrays_module2_performance_tradeoffs_benchmark_run() {
     let mut is_knee_found = false;
     for size in [
         100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 6000, 7000,
-        8000, 9000, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000, 70_000, 80_000, 90_000,
-        100_000,
+        8000, 9000, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000,
     ] {
         let start = Instant::now();
         create_array(size);

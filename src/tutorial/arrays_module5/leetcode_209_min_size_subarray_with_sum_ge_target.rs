@@ -3,7 +3,7 @@ use crate::tutorial::{
         min_slice_len_which_sums_ge_target::min_slice_len_which_sums_ge_target_using_variable_sliding_window_and_prefix_array_for_sum,
         prefix_sum_arrays::{make_prefix_sum_array, range_sum_prefix_sum_arr},
     },
-    common_util::{create_array, print_header, print_output_row_ratio_compare_result},
+    common_util::{create_array, print_header, print_output_row_ratio_compare_result_micros},
 };
 use std::{
     i32,
@@ -71,7 +71,7 @@ pub fn bonus_leetcode_209_min_size_subarray_with_sum_ge_target() {
                 / arr_time_using_prefix_sum_array_inline_computed.len() as u128) as u64,
         );
 
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             *size,
             vec![(
@@ -144,7 +144,7 @@ pub fn bonus_leetcode_209_min_size_subarray_with_sum_ge_target() {
                 / arr_time_using_prefix_sum_array_inline_computed.len() as u128) as u64,
         );
 
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             *size,
             vec![(

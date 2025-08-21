@@ -3,7 +3,8 @@ use std::hash::Hash;
 use std::time::{Duration, Instant};
 
 use crate::tutorial::common_util::{
-    create_array, median_duration_index_u128, print_header, print_output_row_ratio_compare_result,
+    create_array, median_duration_index_u128, print_header,
+    print_output_row_ratio_compare_result_micros,
 };
 
 // Given a string and integer k, return the length of the longest substring with at most k distinct characters.
@@ -69,7 +70,7 @@ pub fn challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements() {
                 .sum::<u128>()
                 / arr_time_sliding_window_hashmap.len() as u128) as u64,
         );
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             *size,
             vec![
@@ -125,7 +126,7 @@ pub fn challenge_max_sub_element_slice_len_with_at_most_k_distinct_elements() {
                 / arr_time_sliding_window_hashmap.len() as u128) as u64,
         );
 
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             *size,
             vec![(time_naive_hashmap, time_sliding_window_hashmap)],

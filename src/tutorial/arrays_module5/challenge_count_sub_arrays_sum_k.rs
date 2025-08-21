@@ -2,7 +2,7 @@
 
 use super::prefix_sum_arrays::{make_prefix_sum_array, range_sum_naive, range_sum_prefix_sum_arr};
 use crate::tutorial::common_util::{
-    create_array, median_duration_index_u128, print_header, print_output_row_ratio_compare_result,
+    create_array, median_duration_index_u128, print_header, print_output_row_ratio_compare_result_micros,
 };
 use std::{
     collections::HashMap,
@@ -69,7 +69,7 @@ pub fn challenge_count_sub_arrays_sum_k() {
                 .sum::<u128>()
                 / arr_time_prefix_sum_array_with_hashmap.len() as u128) as u64,
         );
-        print_output_row_ratio_compare_result(
+        print_output_row_ratio_compare_result_micros(
             &columns,
             size,
             vec![
