@@ -1,3 +1,6 @@
+__Note: I have some other priorities coming up, I am planning on completing up to module 6's end and then putting this project on hiatus for now. This can last several months of a year - I will complete module 7 and a basic image processing cli implementation once I return.
+I know the code isn't pretty, lots of duplication etc. I was just doing quick and dirty's I may tighten up the code before stepping away for a while.__
+
 # DSA Image Processing
 
 A Rust project for image processing. It serves as my tutorial project vehicle for learning algorithms and data structures for now. I have several objectives to learn about for arrays, with my goal being to at the end unifying some of the knowledge gained into a image processing project - not too many features, just enough to get a good feel.
