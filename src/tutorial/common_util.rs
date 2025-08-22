@@ -158,3 +158,70 @@ pub fn alpha_string_from_seed(seed: u64, n: usize) -> String {
     }
     out
 }
+
+pub fn make_matrix(row_count: usize, col_count: usize, default_value: i32) -> Vec<Vec<i32>> {
+    //
+    let mut rows: Vec<Vec<i32>> = Vec::with_capacity(row_count as usize);
+    let mut cell_number = 0;
+    for _ in 0..row_count {
+        let mut cols = Vec::with_capacity(col_count as usize);
+        for _ in 0..col_count {
+            if default_value == 0 {
+                cols.push(cell_number);
+            } else {
+                cols.push(default_value);
+            }
+            cell_number += 1;
+        }
+        rows.push(cols);
+    }
+    rows
+}
+
+pub fn print_matrix_1d_vec_matrix(flat_row_major_matrix: &Vec<i32>, col_count: usize) {
+    print!(" {:>4} |", "idx");
+    for col_idx in 0..col_count {
+        print!(" {:>4} |", col_idx);
+    }
+    print!("\n");
+    for _ in 0..=col_count {
+        print!("------|");
+    }
+    print!("\n");
+    for row_idx in 0..(flat_row_major_matrix.len() / col_count) {
+        print!(" {:>4} |", row_idx);
+        for col_idx in 0..col_count {
+            print!(
+                " {:>4} |",
+                get_row_major(flat_row_major_matrix, row_idx, col_idx, col_count)
+            );
+        }
+        print!("\n");
+    }
+    println!("\n");
+}
+
+fn get_row_major<T>(flat: &Vec<T>, row: usize, col: usize, cols: usize) -> &T {
+    &flat[row * cols + col]
+}
+
+pub fn print_matrix_2d_vec_matrix(matrix: &Vec<Vec<i32>>) {
+    print!(" {:>4} |", "idx");
+    for col_idx in 0..matrix[0].len() {
+        print!(" {:>4} |", col_idx);
+    }
+    print!("\n");
+    for _ in 0..=matrix[0].len() {
+        print!("------|");
+    }
+    print!("\n");
+    for row_idx in 0..matrix.len() {
+        let row = &*matrix[row_idx];
+        print!(" {:>4} |", row_idx);
+        row.iter().for_each(|column_value| {
+            print!(" {:>4} |", column_value);
+        });
+        print!("\n");
+    }
+    println!("\n");
+}

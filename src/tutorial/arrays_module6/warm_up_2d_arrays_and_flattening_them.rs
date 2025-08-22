@@ -1,3 +1,5 @@
+use crate::tutorial::common_util::make_matrix;
+
 pub fn warm_up_2d_arrays_and_flattening_them() {
     // 1) Warm-Up - 2D Arrays
     // 1a) 2d Arrays in rust.
@@ -183,25 +185,6 @@ pub fn warm_up_2d_arrays_and_flattening_them() {
 fn make_array() -> [[i32; 3]; 3] {
     let array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
     array
-}
-
-pub fn make_matrix(row_count: usize, col_count: usize, default_value: i32) -> Vec<Vec<i32>> {
-    //
-    let mut rows: Vec<Vec<i32>> = Vec::with_capacity(row_count as usize);
-    let mut cell_number = 0;
-    for _ in 0..row_count {
-        let mut cols = Vec::with_capacity(col_count as usize);
-        for _ in 0..col_count {
-            if default_value == 0 {
-                cols.push(cell_number);
-            } else {
-                cols.push(default_value);
-            }
-            cell_number += 1;
-        }
-        rows.push(cols);
-    }
-    rows
 }
 
 fn row_major_1d_flatten_i32(matrix: Vec<Vec<i32>>) -> Vec<i32> {
