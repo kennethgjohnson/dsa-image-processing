@@ -14,11 +14,11 @@ use warm_up_2d_arrays_and_flattening_them::warm_up_2d_arrays_and_flattening_them
 pub fn arrays_module6_multi_dimensional_arrays_and_cache() {
     println!("Image Processing DSA - Module 6: Multi-Dimensional Arrays & Cache");
 
-    // // 1) Warm-Up - 2D Arrays
-    // // 1a) 2d Arrays in rust.
-    // // 1b) flatten to 1D form: Row-Major
-    // // 1c) flatten to 1D form: Col-Major
-    // warm_up_2d_arrays_and_flattening_them();
+    // 1) Warm-Up - 2D Arrays
+    // 1a) 2d Arrays in rust.
+    // 1b) flatten to 1D form: Row-Major
+    // 1c) flatten to 1D form: Col-Major
+    warm_up_2d_arrays_and_flattening_them();
 
     // 2) Basic Matrix Operations
     // 2a1) Row Sum
@@ -62,8 +62,8 @@ pub fn arrays_module6_multi_dimensional_arrays_and_cache() {
 fn basic_matrix_operations() {
     println!("==> 2) Basic Matrix Operations\n");
     // // 2) Basic Matrix Operations
-    // row_sum_column_sum_impl();
-    // row_sum_column_sum_benchmarks();
+    row_sum_column_sum_impl();
+    row_sum_column_sum_benchmarks();
 
     // 2b) Transpose
     transpose_impl(); // In progress
