@@ -5,17 +5,20 @@ use crate::tutorial::{
     },
     common_util::{print_header, print_output_row_ratio_compare_result_nanos},
 };
-use std::time::{Duration, Instant};
+use std::{
+    mem::MaybeUninit,
+    time::{Duration, Instant},
+};
 use warm_up_2d_arrays_and_flattening_them::warm_up_2d_arrays_and_flattening_them;
 
 pub fn arrays_module6_multi_dimensional_arrays_and_cache() {
     println!("Image Processing DSA - Module 6: Multi-Dimensional Arrays & Cache");
 
-    // 1) Warm-Up - 2D Arrays
-    // 1a) 2d Arrays in rust.
-    // 1b) flatten to 1D form: Row-Major
-    // 1c) flatten to 1D form: Col-Major
-    warm_up_2d_arrays_and_flattening_them();
+    // // 1) Warm-Up - 2D Arrays
+    // // 1a) 2d Arrays in rust.
+    // // 1b) flatten to 1D form: Row-Major
+    // // 1c) flatten to 1D form: Col-Major
+    // warm_up_2d_arrays_and_flattening_them();
 
     // 2) Basic Matrix Operations
     // 2a1) Row Sum
@@ -58,9 +61,9 @@ pub fn arrays_module6_multi_dimensional_arrays_and_cache() {
 
 fn basic_matrix_operations() {
     println!("==> 2) Basic Matrix Operations\n");
-    // 2) Basic Matrix Operations
-    row_sum_column_sum_impl();
-    row_sum_column_sum_benchmarks();
+    // // 2) Basic Matrix Operations
+    // row_sum_column_sum_impl();
+    // row_sum_column_sum_benchmarks();
 
     // 2b) Transpose
     transpose_impl(); // In progress
@@ -89,7 +92,7 @@ fn transpose_benchmarks() {
     ];
     print_header(&columns);
     let start_size = 32;
-    let number_of_doubles = 10;
+    let number_of_doubles = 9;
     // starting at
     let arr_sizes: Vec<usize> = (0..number_of_doubles).map(|i| start_size << i).collect();
 
@@ -199,9 +202,289 @@ fn transpose_benchmarks() {
     println!(
         "Notice that the more increasingly stagerred and extreme the l1 cache misses become the more Vec<Vec<T>> dominates Row-Major 1d Vec<T>"
     );
+
+    ///////////////////////////////////////////////////////////////////////////////
+    println!("\n\nAnd now with 1d looping block tiling");
+    let columns = [
+        "Data Size",
+        "  2d (ns)",
+        "1d RM(ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+        "  2d (ns)",
+        "1d RM Blocks(64^2) (ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+        "  2d (ns)",
+        "1d RM Blocks(128^2) (ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+        "  2d (ns)",
+        "1d RM Blocks(256^2) (ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+    ];
+    print_header(&columns);
+    let start_size = 32;
+    let number_of_doubles = 9;
+    // starting at
+    let arr_sizes: Vec<usize> = (0..number_of_doubles).map(|i| start_size << i).collect();
+
+    for size in &arr_sizes {
+        let mut arr_time_2d_vec: Vec<Duration> = Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec: Vec<Duration> = Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec_block_64_tile_loop: Vec<Duration> =
+            Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec_block_128_tile_loop: Vec<Duration> =
+            Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec_block_256_tile_loop: Vec<Duration> =
+            Vec::with_capacity(10);
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let start = Instant::now();
+            let _transposed = transpose_2d_vec_poor_cache_locality(matrix);
+            std::hint::black_box(_transposed);
+            arr_time_2d_vec.push(start.elapsed());
+        }
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            let _transposed =
+                transpose_1d_row_major_matrix_poor_cache_locality(flat_row_major_matrix, *size);
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec.push(start.elapsed());
+        }
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            // Trying 32x32 blocks first.
+            let _transposed = transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling(
+                flat_row_major_matrix,
+                *size,
+                64,
+            );
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec_block_64_tile_loop.push(start.elapsed());
+        }
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            // Trying 32x32 blocks first.
+            let _transposed = transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling(
+                flat_row_major_matrix,
+                *size,
+                128,
+            );
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec_block_128_tile_loop.push(start.elapsed());
+        }
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            // Trying 32x32 blocks first.
+            let _transposed = transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling(
+                flat_row_major_matrix,
+                *size,
+                256,
+            );
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec_block_256_tile_loop.push(start.elapsed());
+        }
+
+        let time_2d_vec = Duration::from_nanos(
+            (arr_time_2d_vec.iter().map(|d| d.as_nanos()).sum::<u128>()
+                / arr_time_2d_vec.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec = Duration::from_nanos(
+            (arr_time_1d_row_major_vec
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec_block_64_tiling_loop = Duration::from_nanos(
+            (arr_time_1d_row_major_vec_block_64_tile_loop
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec_block_64_tile_loop.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec_block_128_tiling_loop = Duration::from_nanos(
+            (arr_time_1d_row_major_vec_block_128_tile_loop
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec_block_128_tile_loop.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec_block_256_tiling_loop = Duration::from_nanos(
+            (arr_time_1d_row_major_vec_block_256_tile_loop
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec_block_256_tile_loop.len() as u128) as u64,
+        );
+
+        print_output_row_ratio_compare_result_nanos(
+            &columns,
+            *size * *size,
+            vec![
+                (time_2d_vec, time_1d_row_major_vec),
+                (time_2d_vec, time_1d_row_major_vec_block_64_tiling_loop),
+                (time_2d_vec, time_1d_row_major_vec_block_128_tiling_loop),
+                (time_2d_vec, time_1d_row_major_vec_block_256_tiling_loop),
+            ],
+        );
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    println!("\n\nAnd now with 1d looping block tiling write buffer version");
+    let columns = [
+        "Data Size",
+        "  2d (ns)",
+        "1d RM(ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+        "  2d (ns)",
+        "1d RM Blocks(64^2) (WriteBuffer) (ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+        "  2d (ns)",
+        "1d RM Blocks(128^2) (WriteBuffer)  (ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+        "  2d (ns)",
+        "1d RM Blocks(256^2) (WriteBuffer) (ns)",
+        "Ratio", // Ratio values getting a bit big so hacking a bit of space
+    ];
+    print_header(&columns);
+    let start_size = 32;
+    let number_of_doubles = 9;
+    // starting at
+    let arr_sizes: Vec<usize> = (0..number_of_doubles).map(|i| start_size << i).collect();
+
+    for size in &arr_sizes {
+        let mut arr_time_2d_vec: Vec<Duration> = Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec: Vec<Duration> = Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec_block_64_tile_loop: Vec<Duration> =
+            Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec_block_128_tile_loop: Vec<Duration> =
+            Vec::with_capacity(10);
+        let mut arr_time_1d_row_major_vec_block_256_tile_loop: Vec<Duration> =
+            Vec::with_capacity(10);
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let start = Instant::now();
+            let _transposed = transpose_2d_vec_poor_cache_locality(matrix);
+            std::hint::black_box(_transposed);
+            arr_time_2d_vec.push(start.elapsed());
+        }
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            let _transposed =
+                transpose_1d_row_major_matrix_poor_cache_locality(flat_row_major_matrix, *size);
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec.push(start.elapsed());
+        }
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            // Trying 32x32 blocks first.
+            let _transposed = transpose_square_tiled(flat_row_major_matrix, *size, 64);
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec_block_64_tile_loop.push(start.elapsed());
+        }
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            // Trying 32x32 blocks first.
+            let _transposed = transpose_square_tiled(flat_row_major_matrix, *size, 128);
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec_block_128_tile_loop.push(start.elapsed());
+        }
+
+        for _ in 0..10 {
+            let matrix = make_matrix(*size, *size, 0);
+            let flat_row_major_matrix = flatten_row_major(&matrix);
+            let start = Instant::now();
+            // Trying 32x32 blocks first.
+            let _transposed = transpose_square_tiled(flat_row_major_matrix, *size, 256);
+            std::hint::black_box(_transposed);
+            arr_time_1d_row_major_vec_block_256_tile_loop.push(start.elapsed());
+        }
+
+        let time_2d_vec = Duration::from_nanos(
+            (arr_time_2d_vec.iter().map(|d| d.as_nanos()).sum::<u128>()
+                / arr_time_2d_vec.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec = Duration::from_nanos(
+            (arr_time_1d_row_major_vec
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec_block_64_tiling_loop = Duration::from_nanos(
+            (arr_time_1d_row_major_vec_block_64_tile_loop
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec_block_64_tile_loop.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec_block_128_tiling_loop = Duration::from_nanos(
+            (arr_time_1d_row_major_vec_block_128_tile_loop
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec_block_128_tile_loop.len() as u128) as u64,
+        );
+
+        let time_1d_row_major_vec_block_256_tiling_loop = Duration::from_nanos(
+            (arr_time_1d_row_major_vec_block_256_tile_loop
+                .iter()
+                .map(|d| d.as_nanos())
+                .sum::<u128>()
+                / arr_time_1d_row_major_vec_block_256_tile_loop.len() as u128) as u64,
+        );
+
+        print_output_row_ratio_compare_result_nanos(
+            &columns,
+            *size * *size,
+            vec![
+                (time_2d_vec, time_1d_row_major_vec),
+                (time_2d_vec, time_1d_row_major_vec_block_64_tiling_loop),
+                (time_2d_vec, time_1d_row_major_vec_block_128_tiling_loop),
+                (time_2d_vec, time_1d_row_major_vec_block_256_tiling_loop),
+            ],
+        );
+    }
+
+    println!("So what did we learn? We learned that when strided access will be ");
+    println!("occuring no matter what then Vec<Vec<T>> dominates 1d Row Major Vec<T> ");
+    println!("structures due to a happy accident that each sub Vec becomes its own ");
+    println!("small continous block apart from the source being read. The result appears ");
+    println!("to be that the line being read and written to is expelled less.");
+    println!("\n In short - 1d Row Major is better for reads but far worse for writes.");
+    println!("          - Vec<Vec<T> is worse for reads (since they are strided by row)");
+    println!("            but as a happy co-incidence better also as they are less prone");
+    println!("            to cache thrashing on writes.");
+    println!("This is of course just my speculation at this point.");
 }
 
-// TODO: implement block transposing, 1d row major with block transposing.
 fn transpose_impl() {
     println!("---> Transposing matrix (square)");
     let col_count = 10;
@@ -231,8 +514,162 @@ fn transpose_impl() {
     let trasposed_matrix = transpose_2d_vec_loop_tiling_aka_block_tiling(matrix, 3);
     println!("After 2d with block looping Vec<Vec<T>>:");
     print_matrix_2d_vec_matrix(&trasposed_matrix);
+
+    let matrix = make_matrix(row_count, col_count, 0);
+    println!("Before 1d Vec Row-Major Matrix with block looping:");
+    let flatened_row_major_1d_matrix = flatten_row_major(&matrix);
+    print_matrix_1d_vec_matrix(&flatened_row_major_1d_matrix, col_count);
+    let transposed_row_major_1d_matrix = transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling(
+        flatened_row_major_1d_matrix,
+        col_count,
+        3,
+    );
+    println!("After 1d Vec Row-Major Matrix with block looping:");
+    print_matrix_1d_vec_matrix(&transposed_row_major_1d_matrix, col_count);
+
+    let matrix = make_matrix(row_count, col_count, 0);
+    println!("Before 1d Vec Row-Major Matrix with block looping transpose_square_tiled:");
+    let flatened_row_major_1d_matrix = flatten_row_major(&matrix);
+    print_matrix_1d_vec_matrix(&flatened_row_major_1d_matrix, col_count);
+    let transposed_row_major_1d_matrix =
+        transpose_square_tiled(flatened_row_major_1d_matrix, col_count, 3);
+    println!("After 1d Vec Row-Major Matrix with block looping transpose_square_tiled:");
+    print_matrix_1d_vec_matrix(&transposed_row_major_1d_matrix, col_count);
 }
 
+fn transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling<T: Copy>(
+    mut flat_matrix_row_major_1d: Vec<T>,
+    col_count: usize,
+    block_size: usize,
+) -> Vec<T> {
+    let row_count = flat_matrix_row_major_1d.len() / col_count;
+
+    if col_count < 1 || row_count < 1 {
+        panic!("Matrix must be a 2d matrix with at least 1 element.");
+    }
+
+    if row_count == col_count {
+        // This is an inplace swap so excluding the diagonals we only need to swap
+        // on a half and it will auto swap the other half as a result.
+
+        // Break the matrix into blocks first with block row/col index co-ordinates
+
+        for block_start_row_idx in (0..row_count).step_by(block_size) {
+            for block_start_col_idx in (block_start_row_idx..col_count).step_by(block_size) {
+                // Determine the row/cell ends (some blocks get chopped off)
+                let row_end = (block_start_row_idx + block_size).min(row_count);
+                let col_end = (block_start_col_idx + block_size).min(row_count);
+
+                // Determine if the block being processed is on the diagonal
+                if block_start_col_idx == block_start_row_idx {
+                    // We are on the diagonal so only swap half the cells.
+                    // Transpose top right half
+                    for cell_row_idx in block_start_row_idx..row_end {
+                        for cell_col_idx in (cell_row_idx + 1)..col_end {
+                            let source_idx = cell_row_idx * col_count + cell_col_idx;
+                            let target_idx = cell_col_idx * col_count + cell_row_idx;
+                            flat_matrix_row_major_1d.swap(source_idx, target_idx);
+                        }
+                    }
+                } else {
+                    // We are not on the diagonal so swap all cells
+                    // Transpose the entire block
+                    for cell_row_idx in block_start_row_idx..row_end {
+                        for cell_col_idx in block_start_col_idx..col_end {
+                            let source_idx = cell_row_idx * col_count + cell_col_idx;
+                            let target_idx = cell_col_idx * col_count + cell_row_idx;
+                            flat_matrix_row_major_1d.swap(source_idx, target_idx);
+                        }
+                    }
+                }
+            }
+        }
+        flat_matrix_row_major_1d
+    } else {
+        // Make new rows vector based on amount of columns
+        let mut new_flat_matrix_row_major_1d = Vec::with_capacity(col_count * row_count);
+
+        for block_start_row_idx in (0..row_count).step_by(block_size) {
+            for block_start_col_idx in (0..col_count).step_by(block_size) {
+                // Determine the row/cell ends (some blocks get chopped off)
+                let row_end = (block_start_row_idx + block_size).min(row_count);
+                let col_end = (block_start_col_idx + block_size).min(row_count);
+
+                // Transpose the block
+                for cell_row_idx in block_start_row_idx..row_end {
+                    for cell_col_idx in block_start_col_idx..col_end {
+                        let source_idx = cell_row_idx * col_count + cell_col_idx;
+                        let target_idx = cell_col_idx * col_count + cell_row_idx;
+                        new_flat_matrix_row_major_1d[target_idx] =
+                            flat_matrix_row_major_1d[source_idx];
+                    }
+                }
+            }
+        }
+        new_flat_matrix_row_major_1d
+    }
+}
+
+// Enhanced version square tiled transpose found
+// I need to study these differences still.
+// Looks like its using an intermediate buffer to write to before writing that buffer into the strided destination...
+// I'm not so sure this is going to be much faster - but what do I know I just test and observe the speed.
+//
+// Ok I did the benchmarks it is a lie that this is faster it is the same performance.
+fn transpose_square_tiled<T: Copy>(mut mat: Vec<T>, n: usize, block: usize) -> Vec<T> {
+    let mut buf = vec![MaybeUninit::<T>::uninit(); block * block];
+
+    for i in (0..n).step_by(block) {
+        for j in (0..n).step_by(block) {
+            let row_end = (i + block).min(n);
+            let col_end = (j + block).min(n);
+
+            if i == j {
+                // 🔹 Diagonal block: transpose inside a scratch buffer
+                for r in i..row_end {
+                    for c in j..col_end {
+                        buf[(r - i) * block + (c - j)].write(mat[r * n + c]);
+                    }
+                }
+                for r in i..row_end {
+                    for c in j..col_end {
+                        unsafe {
+                            mat[r * n + c] = buf[(c - j) * block + (r - i)].assume_init();
+                        }
+                    }
+                }
+            } else if i < j {
+                // 🔹 Off-diagonal tile pair (i,j) and (j,i)
+                for r in i..row_end {
+                    for c in j..col_end {
+                        buf[(r - i) * block + (c - j)].write(mat[r * n + c]); // copy tile (i,j)
+                    }
+                }
+
+                for r in j..col_end {
+                    for c in i..row_end {
+                        let tmp = mat[r * n + c]; // (j,i) tile element
+                        unsafe {
+                            mat[r * n + c] = buf[(c - i) * block + (r - j)].assume_init(); // from (i,j)
+                        }
+                        mat[c * n + r] = tmp; // write into (i,j)
+                    }
+                }
+            }
+        }
+    }
+    mat
+}
+
+// This is the optimal solution for matrices that need transposing.
+// Vec<Vec<T>> is the best structure it wins because of the strided
+// access on the writes. The sub Vec<T> instances play better with
+// the cache when writing.
+// Best block size on my processor (128K L1) means a square
+// matrix performs best with a 64 block size, while a
+// rectangle performs better with a 32 block size. The difference
+// is due to the square matrix doing in place swapping, while the
+// rectangle has to copy to a destination matrix.
 fn transpose_2d_vec_loop_tiling_aka_block_tiling<T: Copy>(
     mut matrix: Vec<Vec<T>>,
     block_size: usize,
