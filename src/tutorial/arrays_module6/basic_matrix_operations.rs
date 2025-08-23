@@ -1,6 +1,6 @@
 mod rotate_90_degrees_clockwise;
 mod row_sum_column;
-mod transpose;
+pub mod transpose;
 
 use crate::tutorial::arrays_module6::basic_matrix_operations::{
     rotate_90_degrees_clockwise::rotate_90_degrees_clockwise, row_sum_column::row_sum_column_sum,

@@ -207,7 +207,7 @@ fn transpose_1d_row_major_matrix(
 // rectangle performs better with a 32 block size. The difference
 // is due to the square matrix doing in place swapping, while the
 // rectangle has to copy to a destination matrix.
-fn transpose_2d_vec_loop_tiling_aka_block_tiling<T: Copy>(
+pub fn transpose_2d_vec_loop_tiling_aka_block_tiling<T: Copy>(
     mut matrix: Vec<Vec<T>>,
     block_size: usize,
 ) -> Vec<Vec<T>> {
@@ -456,7 +456,7 @@ fn transpose_benchmarks() {
         for _ in 0..10 {
             let matrix = make_matrix(*size, *size, 0);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_2d_vec_loop_tiling_aka_block_tiling(matrix, 64);
             std::hint::black_box(_transposed);
             arr_time_2d_vec_block_64_tile_loop.push(start.elapsed());
@@ -465,7 +465,7 @@ fn transpose_benchmarks() {
         for _ in 0..10 {
             let matrix = make_matrix(*size, *size, 0);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_2d_vec_loop_tiling_aka_block_tiling(matrix, 128);
             std::hint::black_box(_transposed);
             arr_time_2d_vec_block_128_tile_loop.push(start.elapsed());
@@ -474,7 +474,7 @@ fn transpose_benchmarks() {
         for _ in 0..10 {
             let matrix = make_matrix(*size, *size, 0);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_2d_vec_loop_tiling_aka_block_tiling(matrix, 256);
             std::hint::black_box(_transposed);
             arr_time_2d_vec_block_256_tile_loop.push(start.elapsed());
@@ -589,7 +589,7 @@ fn transpose_benchmarks() {
             let matrix = make_matrix(*size, *size, 0);
             let flat_row_major_matrix = flatten_row_major(&matrix);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling(
                 flat_row_major_matrix,
                 *size,
@@ -603,7 +603,7 @@ fn transpose_benchmarks() {
             let matrix = make_matrix(*size, *size, 0);
             let flat_row_major_matrix = flatten_row_major(&matrix);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling(
                 flat_row_major_matrix,
                 *size,
@@ -617,7 +617,7 @@ fn transpose_benchmarks() {
             let matrix = make_matrix(*size, *size, 0);
             let flat_row_major_matrix = flatten_row_major(&matrix);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_1d_row_major_matrix_loop_tiling_aka_block_tiling(
                 flat_row_major_matrix,
                 *size,
@@ -729,7 +729,7 @@ fn transpose_benchmarks() {
             let matrix = make_matrix(*size, *size, 0);
             let flat_row_major_matrix = flatten_row_major(&matrix);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_square_tiled(flat_row_major_matrix, *size, 64);
             std::hint::black_box(_transposed);
             arr_time_1d_row_major_vec_block_64_tile_loop.push(start.elapsed());
@@ -739,7 +739,7 @@ fn transpose_benchmarks() {
             let matrix = make_matrix(*size, *size, 0);
             let flat_row_major_matrix = flatten_row_major(&matrix);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_square_tiled(flat_row_major_matrix, *size, 128);
             std::hint::black_box(_transposed);
             arr_time_1d_row_major_vec_block_128_tile_loop.push(start.elapsed());
@@ -749,7 +749,7 @@ fn transpose_benchmarks() {
             let matrix = make_matrix(*size, *size, 0);
             let flat_row_major_matrix = flatten_row_major(&matrix);
             let start = Instant::now();
-            // Trying 32x32 blocks first.
+
             let _transposed = transpose_square_tiled(flat_row_major_matrix, *size, 256);
             std::hint::black_box(_transposed);
             arr_time_1d_row_major_vec_block_256_tile_loop.push(start.elapsed());
