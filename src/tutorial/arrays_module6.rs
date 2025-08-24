@@ -1,9 +1,11 @@
 mod basic_matrix_operations;
 mod matrix_multiplication;
+mod prefix_sums_2d;
 mod warm_up_2d_arrays_and_flattening_them;
 
 use basic_matrix_operations::basic_matrix_operations;
 use matrix_multiplication::matrix_multiplication;
+use prefix_sums_2d::prefix_sums_2d;
 use warm_up_2d_arrays_and_flattening_them::warm_up_2d_arrays_and_flattening_them;
 
 pub fn arrays_module6_multi_dimensional_arrays_and_cache() {
@@ -34,8 +36,9 @@ pub fn arrays_module6_multi_dimensional_arrays_and_cache() {
     // 4) 2D Prefix Sums
     // 4a) Implement the Prefix sum
     // 4b) Implement Submatrix sums using inclusion-exclusion.
+    prefix_sums_2d();
 
-    // 5) Cache-Friendly vs. Cache-Unfriendly Traversals
+    // 5) Cache-Friendly vs. Cache-Unfriendly Traversals [NOT GONNA DO THIS THIS IS OBVIOUS]
     // 5a) Row-major sums
     // 5b) Col-major sums
     // 5c) Evaluate Claim: row-major is faster on large matrices.

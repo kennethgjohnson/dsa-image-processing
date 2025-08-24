@@ -208,3 +208,13 @@ Build a command‐line “array_utils” program in your language of choice that
 - leetcode_560_count_subarray_sum_equals_k.rs: Running Prefix Sum with constraint lookup in Hashmap of running relations.
 - leetcode_76_min_sub_string_contains_t_chars_including_dupes.rs: Slidig Window (Variable) with Frequency Counting, and Constraint Lookup in Hashmap Cache.
 
+### Module 6 (WIP)
+- warm_up_2d_arrays_and_flattening_them.rs: Exercises on flattening 2D arrays to 1D and memory-order/access patterns.
+- basic_matrix_operations.rs: High-level matrix helpers and examples; coordinates use of helpers in the `basic_matrix_operations/` subfolder.
+- basic_matrix_operations/transpose.rs: In-place transpose for square matrices and related helpers.
+- basic_matrix_operations/rotate_90_degrees_clockwise.rs: Rotate a square matrix 90° clockwise (cache- and index-aware implementations).
+- basic_matrix_operations/row_sum_column.rs: Row/column sum examples and cache-order demonstration snippets.
+- matrix_multiplication.rs: Naive matrix multiplication and notes/examples showing cache-optimized loop order.
+- prefix_sums_2d.rs: 2D prefix-sum arrays and range-sum query helpers.
+
+### Module 7 (Canceled - for now)
