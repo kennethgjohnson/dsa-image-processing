@@ -38,12 +38,15 @@ pub fn arrays_module6_multi_dimensional_arrays_and_cache() {
     // 4b) Implement Submatrix sums using inclusion-exclusion.
     prefix_sums_2d();
 
-    // 5) Cache-Friendly vs. Cache-Unfriendly Traversals [NOT GONNA DO THIS THIS IS OBVIOUS]
+    // [NOT GONNA DO THIS: It is obvious that row-major out performs col-major.]
+    // 5) Cache-Friendly vs. Cache-Unfriendly Traversals
     // 5a) Row-major sums
     // 5b) Col-major sums
     // 5c) Evaluate Claim: row-major is faster on large matrices.
 
-    // 6) Advanced Patterns
+    // 6) Advanced Patterns [NOT GONNA DO THIS: spiral is obvious, and Kadane's
+    //      2D Extension is some complicated edge case stuff, I'll maybe come back
+    //      after I come back from my other projects.]
     // 6a) Spiral Traversal
     // 6b) Maximum submatrix sum (Kadane's 2D Extension)
 

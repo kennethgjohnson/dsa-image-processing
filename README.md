@@ -1,7 +1,7 @@
-__Note: I have some other priorities coming up, I am planning on completing up to module 6's end and then putting this project on hiatus for now. This can last several months of a year - I will complete module 7 and a basic image processing cli implementation once I return.
+__Note: I have some other priorities coming up, I am putting this project on hiatus for now. This can last several months of a year - I will complete module 7 and a basic image processing cli implementation once I return, and unarchive this project.
 I know the code isn't pretty, lots of duplication etc. I was just doing quick and dirty's I may tighten up the code before stepping away for a while.__
 
-# DSA Image Processing
+# DSA Image Processing (Status: Hiatus) [Project ARCHIVED]
 
 A Rust project for image processing. It serves as my tutorial project vehicle for learning algorithms and data structures for now. I have several objectives to learn about for arrays, with my goal being to at the end unifying some of the knowledge gained into a image processing project - not too many features, just enough to get a good feel.
 
@@ -39,8 +39,8 @@ This project runs different tutorial modules based on a command line argument:
 - `3`: Arrays Module 3 - Dynamic Arrays and Amortized Analysis
 - `4`: Arrays Module 4 - Core Array Algorithms
 - `5`: Arrays Module 5 - Sliding Windows & Prefix-Sum Tricks
-- `6`: Arrays Module 6 - Multi-Dimensional Arrays & Cache (WIP)
-- `7`: Arrays Module 7 - "Array Toolkit" Capstone Project (TODO)
+- `6`: Arrays Module 6 - Multi-Dimensional Arrays & Cache (Completed early)
+- ~~`7`: Arrays Module 7 - "Array Toolkit" Capstone Project (Canceled)~~
 - `*`: Run all.
 
 To run a specific module, use:
@@ -66,7 +66,7 @@ If no valid module number is provided, a help message will be displayed.
     
 6. **Module 6 – Multi-Dimensional Arrays & Cache**
     
-7. **Module 7 – Putting It All Together: “Array Toolkit” Project**
+7. ~~**Module 7 – Putting It All Together: “Array Toolkit” Project**~~
     
 
 Each module has
@@ -208,7 +208,7 @@ Build a command‐line “array_utils” program in your language of choice that
 - leetcode_560_count_subarray_sum_equals_k.rs: Running Prefix Sum with constraint lookup in Hashmap of running relations.
 - leetcode_76_min_sub_string_contains_t_chars_including_dupes.rs: Slidig Window (Variable) with Frequency Counting, and Constraint Lookup in Hashmap Cache.
 
-### Module 6 (WIP)
+### Module 6 (Completed - early)
 - warm_up_2d_arrays_and_flattening_them.rs: Exercises on flattening 2D arrays to 1D and memory-order/access patterns.
 - basic_matrix_operations.rs: High-level matrix helpers and examples; coordinates use of helpers in the `basic_matrix_operations/` subfolder.
 - basic_matrix_operations/transpose.rs: In-place transpose for square matrices and related helpers.
